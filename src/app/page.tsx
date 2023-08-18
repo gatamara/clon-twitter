@@ -1,5 +1,7 @@
 
 import { AuthButtonServer } from '@/components/auth-button-server'
+
+import { PostLists } from '@/components/posts-list'
 import {createServerComponentClient} from '@supabase/auth-helpers-nextjs'
 import {cookies} from 'next/headers'
 import { redirect } from 'next/navigation'
@@ -16,18 +18,16 @@ export default async function Home() {
 
   const {data:posts} =await supabase
   .from('posts')
-  .select('*, users(name, avatar_url,user_name)')
+  .select('*, user:users(name, avatar_url,user_name)')
 
 
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-   <AuthButtonServer/>
-   <pre>
-    {
-      JSON.stringify(posts,null,2)
-    }
-   </pre>
+    <main className="flex min-h-screen flex-col items-center justify-between">
+      <section className="max-w-[600px] w-full mx-auto border-l border-r border-white/20 min-h-screen">
+       <AuthButtonServer/>
+       <PostLists posts={posts} />
+      </section>
 
     </main>
   )
